@@ -1,0 +1,153 @@
+body {
+    margin: 0;
+    font-family: "Avenir Next";
+}
+
+.header {
+    padding-top: 1rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 0.5px solid #F5F5F5;
+    box-shadow: 0.5px 0.5px 8px #ccc;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    background-color: #fff;
+}
+
+.header form {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    padding: 5px 20px;
+    background-color: #F5F5F5;
+    border-radius: 20px;
+    height: 2.3em;
+    width: 40%;
+    overflow: hidden;
+}
+
+.header form input[type="text"] {
+    border: none;
+    height: 2.0em;
+    width: 100%;
+    background-color: #F5F5F5;
+}
+
+.header form input[type="text"]:focus {
+    outline: 0;
+}
+
+.header button[type="submit"] {
+    cursor: pointer;
+    font-family: FontAwesome;
+    font-size: 1.3em;
+    border: none;
+    background: none;
+    color: #3879D9;
+    position: absolute;
+    width: 2.5em;
+    height: 2.5em;
+    right: 0;
+    top: -8px;
+    outline: none;
+}
+
+.header ul {
+    display: flex;
+    justify-content: right;
+    column-gap: 5%;
+    align-items: center;
+    padding-right: 5%;
+}
+
+.header ul li {
+    list-style: none;
+}
+
+.header .top-header a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #333;
+}
+
+.header .bottom-header a {
+    text-decoration: none;
+    color: #333;
+}
+
+.main-contents {
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 200px;
+}
+
+.side-menu {
+    position: fixed;
+    top: 0;
+    left: -280px;
+    width: 280px;
+    height: 100%;
+    background-color: #fff;
+    z-index: 999;
+}
+
+.side-menu p {
+    font-size: large;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 2rem;
+}
+
+.side-menu ul {
+    list-style: none;
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.side-menu ul li {
+    padding: 0.3rem 0.5rem;
+    border-left: 3px solid #11C3AC;
+}
+
+.side-menu ul li:hover {
+    background-color: #eee;
+}
+
+.side-menu ul li a {
+    color: black;
+    text-decoration: none;
+}
+
+
+.side-menu .side-menu-button {
+    position: absolute;
+    top: 168px;
+    left: 280px;
+    margin: 0;
+    padding: 0.8rem;
+    background-color: #11C3AC;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    color: #fff;
+    writing-mode: vertical-rl;
+}
+
+.side-menu .side-menu-button:hover {
+    cursor: pointer;
+}
+
+.hide-contents {
+    display: none;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: 0;
+    z-index: 998;
+}
