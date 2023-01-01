@@ -8,57 +8,136 @@ http.createServer((req,res)=>{
         if(req.url === '/favicon.ico') return res.end();
         switch(req.url){
             case '/':
+                let formData = new formidable.IncomingForm();
+                let tDate = new Date().toLocaleString("en-CA",{timeZone: "America/Vancouver"}).slice(0,10);
+                formData.parse(req,(err,fields,files)=>{
+                    // for login
+                    if(fields.formChk == "loginForm"){
+                        let loginCon = dataBase.dbConnect();
+                        loginCon.connect((err)=>{
+                            if(err) throw err;
+                            loginCon.query(dataBase.selectQuery('user_tb',`email = '${fields.user}'`),(err,result)=>{
+                                if(err) throw err;
+                                if(result.length > 0){
+                                    bcrypt.compare(fields.pass,result[0].password, (err,chkPass)=>{
+                                        if(chkPass){
+                                            console.log(`${fields.user} login success`);
+                                            res.write(JSON.stringify(result));
+                                            return res.end();
+                                        }
+                                        else{
+                                            console.log('login failed');
+                                            return res.end();
+                                        }
+                                    });
+                                }
+                                else{
+                                    console.log('login failed');
+                                    return res.end();
+                                }
+                            })
+                        })
+                    }
+                    // for register
+                    else if(fields.formChk == "regForm"){
+                        let insertCon = dataBase.dbConnect();
+                        insertCon.connect((err)=>{
+                            if(err) throw err;
+                            insertCon.query(dataBase.selectQuery('user_tb',`email = '${fields.email}'`),(err,result)=>{
+                                if(err) throw err;
+                                if(result.length <= 0){
+                                    bcrypt.hash(fields.password, 10,function(err, hash){
+                                        if(err) throw err;
+                                        let insertQuery = `INSERT INTO user_tb (email,password,firstname,lastname,dob,gender,role,join_date) VALUES ('${fields.email}','${hash}','${fields.firstname}','${fields.lastname}','${fields.dob}','${fields.gender}','${fields.regType}','${tDate}')`;
+                                        insertCon.query(insertQuery,(err,result)=>{
+                                            if(err) throw err;
+                                            res.write('true');
+                                            return res.end();
+                                        })
+                                    })
+                                }
+                                else{
+                                    res.write('false');
+                                    return res.end();
+                                }
+                            })
+                        })
+                    }
+                })  
+                break;
 
-            case '/login':
-                let loginForm = new formidable.IncomingForm();
-                loginForm.parse(req,(err,fields,files)=>{
-                    let loginCon = dataBase.dbConnect();
-                    loginCon.connect((err)=>{
+            case '/myprofile':
+                
+                break;
+
+            case '/userdata':
+                    let dbcon = dataBase.dbConnect();
+                    dbcon.connect((err)=>{
                         if(err) throw err;
-                        loginCon.query(dataBase.selectQuery('user_tb',`email = '${fields.user}'`),(err,result)=>{
+                        dbcon.query(dataBase.selectQuery('user_tb'),(err,result)=>{
                             if(err) throw err;
                             if(result.length > 0){
-                                async function passVerify(password){
-                                    const chkPass = await bcrypt.compare(password,result[0].password);
-                                    if(chkPass){
-                                        console.log(`${fields.user} login success`);
-                                    }
-                                    else{
-                                        console.log('login failed');
-                                    }
-                                };
-                                passVerify(fields.pass);
-                                
+                                res.write(JSON.stringify(result));
                             }
                             else{
-                                console.log('login failed');
+                                console.log('data load failed');
                             }
                             return res.end();
-                        })
-                        
+                        }) 
                     })
-                    
-                });
                 break;
-            case '/register':
-                let regForm = new formidable.IncomingForm();
-                regForm.parse(req,(err,fields,files)=>{
-                    let insertCon = dataBase.dbConnect();
-                    insertCon.connect((err)=>{
+
+            case '/postdata':
+                    let dbcon2 = dataBase.dbConnect();
+                    dbcon2.connect((err)=>{
                         if(err) throw err;
-                        async function passHash(password) {
-                            const hash = await bcrypt.hash(password, 10);
-                            let insertQuery = `INSERT INTO user_tb (email,password,firstname,lastname,dob,gender) VALUES ('${fields.email}','${hash}','${fields.firstname}','${fields.lastname}','${fields.dob}','${fields.gender}')`;
-                            insertCon.query(insertQuery,(err,result)=>{
-                                if(err) throw err;
-                                res.write(result.affectedRows + 'Rows inserted');
-                                return res.end();
-                            })
-                          }  
-                        passHash(fields.password);
-                    });
-                });
+                        dbcon2.query(dataBase.selectJoinQuery('community_tb','user_tb'),(err,result)=>{
+                            if(err) throw err;
+                            if(result.length > 0){
+                                res.write(JSON.stringify(result));
+                            }
+                            else{
+                                console.log('data load failed');
+                            }
+                            return res.end();
+                        }) 
+                    })
                 break;
+
+            case '/postdata2':
+                    let dbcon3 = dataBase.dbConnect();
+                    dbcon3.connect((err)=>{
+                        if(err) throw err;
+                        dbcon3.query(dataBase.selectJoinQuery('market_td','user_tb'),(err,result)=>{
+                            if(err) throw err;
+                            if(result.length > 0){
+                                res.write(JSON.stringify(result));
+                            }
+                            else{
+                                console.log('data load failed');
+                            }
+                            return res.end();
+                        }) 
+                    })
+                break;
+
+            case '/postdata3':
+                    let dbcon4 = dataBase.dbConnect();
+                    dbcon4.connect((err)=>{
+                        if(err) throw err;
+                        dbcon4.query(dataBase.selectJoinQuery('job_tb','user_tb'),(err,result)=>{
+                            if(err) throw err;
+                            if(result.length > 0){
+                                res.write(JSON.stringify(result));
+                            }
+                            else{
+                                console.log('data load failed');
+                            }
+                            return res.end();
+                        }) 
+                    })
+                break;
+
             default:
                 res.writeHead(404,{'Content-Type':'text/html'});
                 res.write('Not found');
