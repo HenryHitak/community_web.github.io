@@ -1,0 +1,79 @@
+section:first-child{
+  width: 248px;
+  height: 100vh;
+  background-color: rgba(80, 80, 80, .8);
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  transition: .4s width;
+  overflow: hidden;
+  position: fixed;
+}
+section > button{
+  margin: 0 0 0 auto;
+  background-color: transparent;
+  border: none;
+  font-size: 2rem;
+  color: whitesmoke;
+  cursor: pointer;
+}
+section:first-child > button > svg{
+  padding: 0;
+  padding-top: 0.8rem;
+}
+section:first-child > div{
+  width: 225px;
+  height: 1.5px;
+  margin: 0.8rem 0;
+  background-color: whitesmoke;
+  transition: .4s width;
+}
+section:first-child > article{
+  width: 228px;
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  padding-left: 2rem;
+  margin-bottom: 1rem;
+}
+section:first-child > article ul{
+  margin: 0;
+  list-style: none;
+  height: 0px;
+  overflow: hidden;
+  transition: .4s height;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.5rem;
+}
+section:first-child > article li{
+  font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+section:first-child > article a{
+  color: whitesmoke;
+  text-decoration: none;
+}
+section:first-child > article a:hover{
+  text-decoration: underline;
+}
+section:first-child div{
+  display: flex;
+  align-items: center;
+  column-gap: 0.6rem;
+  margin: 0;
+  padding-left: 0;
+  justify-content: left;
+  font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 1.1rem;
+  color: whitesmoke;
+  cursor: pointer;
+}
+section:nth-child(2){
+  margin-left: 60px;
+  margin-right: 60px;
+}
+svg{
+  font-size: 2rem;
+  color: whitesmoke;
+  padding: 0.8rem 0;
+}

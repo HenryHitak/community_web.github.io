@@ -1,0 +1,36 @@
+h2{
+  margin-left: 5%;
+}
+
+table, td, th {
+  border: 1px solid gray;
+}
+
+table{
+  margin-left: 5%;
+  text-align: center;
+  width: 95%;
+  border-collapse: collapse;
+}
+
+caption {
+  font-weight: 700;
+  text-align: left;
+  background-color: rgb(253, 246, 225);
+}
+
+tr:hover{
+  background-color: lightgray;
+}
+
+th, td {
+  padding: 0.5%;
+}
+
+th {
+  background-color: lightblue;
+}
+
+button {
+  padding: 5%;
+}

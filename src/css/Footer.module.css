@@ -1,0 +1,14 @@
+.footer{
+  width: 248px;
+  position: absolute;
+  background-color: transparent;
+  bottom: 1.5rem;
+  height: min-content;
+  color: whitesmoke;
+  font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+  display: flex;
+  flex-direction: column;
+  row-gap: 0.3rem;
+  overflow: hidden;
+  text-align: center;
+}
