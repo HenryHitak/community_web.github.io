@@ -1,9 +1,9 @@
-import AdminTable from "../components/AdminTable";
+import AdminSum from "../components/AdminSum";
 
 export default function Admin(){    
     return(
         <>
-            <AdminTable></AdminTable>
+            <AdminSum></AdminSum>
         </>
     )
 }

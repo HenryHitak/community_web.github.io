@@ -5,6 +5,7 @@ import Contact from './pages/Contact';
 import Myprofile from './pages/Myprofile';
 import Nopage from './pages/Nopage';
 import Admin from './pages/Amin';
+import Admin2 from './pages/Admin2';
 import { useState } from 'react';
 
 export default function App(){
@@ -23,6 +24,7 @@ export default function App(){
                         <Route path='contact' element={<Contact/>} />
                         <Route path='myprofile' element={<Myprofile/>} LoggedUser={user} />
                         <Route path='admin' element={<Admin/>} />
+                        <Route path='admindash' element={<Admin2/>} />
                         <Route path='*' element={<Nopage/>} />
                     </Route>
                 </Routes>
