@@ -1,47 +1,36 @@
 import httpCommon from "./httpCommon";
 class dbService{
     registerUser(data){
-        return httpCommon.post('/', data);
+        return httpCommon.post('/register', data);
     }
 
     loginUser(data){
-        return httpCommon.post('/', data);
+        return httpCommon.post('/login', data);
     }
 
     getData(){
-        let formdata = new FormData();
-        return httpCommon.post('/userdata', formdata, {
-            headers:{
-                'content-type':'multipart/form-data'
-            }
-        });
+        return httpCommon.post('/userdata');
     }
 
-    getPosts(){
+    change(test,test2){
         let formdata = new FormData();
-        return httpCommon.post('/postdata', formdata, {
-            headers:{
-                'content-type':'multipart/form-data'
-            }
-        });
+        formdata.append("id",test);
+        formdata.append("table",test2);
+        return httpCommon.post('/change',formdata);
     }
 
-    getPosts2(){
+    // get post informtion
+    getPosts(tablename){
         let formdata = new FormData();
-        return httpCommon.post('/postdata2', formdata, {
-            headers:{
-                'content-type':'multipart/form-data'
-            }
-        });
+        formdata.append("table",tablename);
+        return httpCommon.post('/postdata',formdata);
     }
 
-    getPosts3(){
+    update(key,action){
         let formdata = new FormData();
-        return httpCommon.post('/postdata3', formdata, {
-            headers:{
-                'content-type':'multipart/form-data'
-            }
-        });
+        formdata.append("key",key);
+        formdata.append("status",action);
+        return httpCommon.post('/block',formdata);
     }
     
 }
