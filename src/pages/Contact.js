@@ -5,9 +5,9 @@ export default function Contact(){
         event.preventDefault();
         emailjs.sendForm('service_5nfpaxi','template_owmjxkf',event.target,'igGDlOlt-OPxjCdwj')
         .then((result)=>{
-            alert("Your message has been sent successfully.")
+            alert("Your message has been sent successfully.");
         },(error)=>{
-           alert("Error") 
+            alert("Error");
         });
         
     }

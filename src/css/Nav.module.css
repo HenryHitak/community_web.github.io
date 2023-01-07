@@ -35,3 +35,11 @@
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   /* background-color: rgba(80, 80, 80, .8); */
 }
+
+.screen div{
+  display: flex;
+  width: 90%; 
+  justify-content: end;
+  margin: 1%;
+  column-gap: 15px;
+}
