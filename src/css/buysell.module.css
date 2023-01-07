@@ -1,0 +1,38 @@
+.reco_sec{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.reco_nav{
+  display: flex;
+  justify-content: space-between;
+}
+.reco_list{
+  list-style: none;
+  display: flex;
+  column-gap: 5%;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  row-gap: 4rem;
+}
+.reco_list li{
+  width: 20%;
+  cursor: pointer;
+}
+.reco_list li figure{
+  width: 100%;
+  margin: 0;
+}
+.reco_list li img{
+  width: 100%;
+}
+.reco_list figcaption h3,
+.reco_list figcaption h4,
+.reco_list figcaption h5{
+  margin: 10px 0;
+}
+.loadBtn{
+  color: #555;
+  font-size: 1.5rem;
+  margin: 2rem 0;
+}

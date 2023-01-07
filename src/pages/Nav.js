@@ -45,7 +45,7 @@ export default function Nav(){
                         <h1><Link to="/">Tian Tian</Link></h1>
                         <nav>
                             <ul>
-                                <li><Link to="buysell">Buy/Sell</Link></li>
+                                <li><Link to="marketplace">Marketplace</Link></li>
                                 <li><Link to="community">Community</Link></li>
                                 <li><Link to="contact">Contact Us</Link></li>
                                 {chkLoginFlag ? <li><Link to="myprofile">My page</Link></li> : null}

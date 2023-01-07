@@ -6,7 +6,7 @@ section:first-child{
   align-items: center;
   flex-direction: column;
   transition: .4s width;
-  overflow: hidden;
+  /* overflow: hidden; */
   position: fixed;
 }
 section > button{
@@ -22,7 +22,7 @@ section:first-child > button > svg{
   padding-top: 0.8rem;
 }
 section:first-child > div{
-  width: 225px;
+  width: 40px;
   height: 1.5px;
   margin: 0.8rem 0;
   background-color: whitesmoke;
@@ -76,4 +76,25 @@ svg{
   font-size: 2rem;
   color: whitesmoke;
   padding: 0.8rem 0;
+}
+aside{
+  position: absolute;
+  left: 60px;
+}
+aside ul{
+  list-style: none;
+  width: 100px;
+  padding: 10%;
+  background-color: rgba(80, 80, 80, .8);
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+aside a{
+  font-size: 1.1rem;
+  color: whitesmoke;
+  font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
+  text-decoration: none;
+}
+aside a:hover{
+  text-decoration: underline;
 }

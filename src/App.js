@@ -10,6 +10,8 @@ import Admin2 from './pages/Admin2';
 import EmailConfirm from './pages/EmailConfirm';
 import PassReset from './pages/PassReset';
 import { useState } from 'react';
+import Marketplace from './pages/Marketplace';
+import ProductDetails from './components/ProductDetails';
 
 export default function App(){
     const [user,setUser] = useState('');
@@ -25,6 +27,8 @@ export default function App(){
                         <Route index element={<Home/>} />
                         <Route path='home' element={<Home/>} />
                         <Route path='contact' element={<Contact/>} />
+                        <Route path='marketplace' element={<Marketplace/>} />
+                        <Route path='details/:id' element={<ProductDetails/>} />
                         <Route path='myprofile' element={<Myprofile/>} LoggedUser={user} />
                         <Route path='admin' element={<Admin/>} />
                         <Route path='admindash' element={<Admin2/>} />
