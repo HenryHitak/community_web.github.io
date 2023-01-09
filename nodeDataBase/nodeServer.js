@@ -1,7 +1,21 @@
 const formidable = require('formidable');
 const bcrypt = require('bcrypt');
+let url = require('url');
+var cookieSession = require('cookie-session');
+var express = require('express');
+var app = express();
+
 var http = require('http');
 var dataBase = require('./modules/dataBase');
+const nodemailer = require("nodemailer");
+var transporter = nodemailer.createTransport({
+        service: 'outlook',
+        auth: {
+          user: 'testComm_0101@outlook.com',
+          pass: 'testComm'
+        }
+      });
+      
 http.createServer((req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:3000');
     try{
@@ -150,6 +164,100 @@ http.createServer((req,res)=>{
                         passHash(fields.password);
                     });
                 });
+                break;
+
+            case '/email':
+                let emailConfirm = new formidable.IncomingForm();
+                let Edbcon = dataBase.dbConnect();
+                emailConfirm.parse(req,(err,fields,files)=>{
+                    Edbcon.connect((err)=>{
+                        if(err) throw err;
+                        Edbcon.query(dataBase.selectQuery('user_tb',`email = '${fields.email}'`),(err,result)=>{
+                            if(err) throw err;
+                            if(result.length > 0){
+                                console.log(result[0].password); //all info about this user
+                                // var token = '123';
+                                var mailOptions = {
+                                    from: 'testComm_0101@outlook.com',
+                                    to: fields.email,
+                                    subject: 'Sending Email using Node.js',
+                                    //text + recent hash pass
+                                    text: `Change your email from this link http://localhost:3000/reset?pass=${result[0].password}`
+                                };
+                                transporter.sendMail(mailOptions, function (error, info){
+                                    if (error) {
+                                        res.write('something is wrong');
+                                        console.log(error);
+                                    } else {
+                                        // res.setHeader('Set-Cookie','visited=true; Max-Age=3000; HttpOnly, Secure');
+                                        //wanna set cookie with rondom number, exp = 1hour to set timelimit for this link, but res.setHeader dosen't work
+                                        let length = 12;
+                                        let charset = "@#$&*0123456789ABCDEFGHIJKLMNbcdefghijklmnopqrstuvwxyz";
+                                        let key = "";
+                                        for (let i = 0, n = charset.length; i < length; ++i) {
+                                            key += charset.charAt(Math.floor(Math.random() * n));
+                                        }
+                                        res.write(key);
+                                        // res.write('Email has been sent successfully');
+                                        console.log(info);
+                                    }
+                                    return  res.end();
+                                  });
+                            }
+                            else{
+                                console.log('email is wrong');
+                                res.write('Email is wrong');
+                                return  res.end();
+                            }
+                        }) 
+                    })
+                })
+            
+                  break;
+
+            // case '/check' :
+            //     let confirmKey = new formidable.IncomingForm();
+            //     confirmKey.parse(req,(err, fields,files)=>{
+            //         console.log(fields);
+            //         res.write(fields);
+            //     });
+            //     res.end();
+            //     break;
+
+            case '/reset' :
+                //check on frontend
+                let parsedurl = url.parse(req.url,true);
+                //why parsedurl is null? querystring should be inside og it
+                console.log(res.getHeaders());
+                console.log(req.url);
+                console.log(req.url.query);
+                console.log(parsedurl);
+                let resetPass = new formidable.IncomingForm();
+                let Rdbcon = dataBase.dbConnect();
+                resetPass.parse(req,(err,fields,files)=>{
+                    if(fields.pass == fields.passCon){
+                        Rdbcon.connect((err)=>{
+                            if(err) throw err;
+                            async function passHash(password,email) {
+                            const hash = await bcrypt.hash(password, 10);               
+                            Rdbcon.query(dataBase.updateQuery(hash,email),(err,result)=>{
+                                console.log(result.changedRows);
+                                if(err) throw err;
+                                if(result.changedRows > 0){
+                                    res.write('update succesfully');
+                                    console.log('update succesfully');
+                                }
+                                else{
+                                    res.write('failed');
+                                    console.log('failed');
+                                }
+                                return res.end();
+                            }) 
+                            }
+                            passHash(fields.pass,fields.email)
+                        })
+                    }
+                })  
                 break;
 
             default:

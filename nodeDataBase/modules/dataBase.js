@@ -33,5 +33,10 @@ class dataBase{
         let selectQuery = `DELETE FROM ${request} WHERE ${column} = ${key}`;
         return selectQuery;
     }
+
+    updateQuery(pass,email){
+        let updateQuery = `UPDATE user_tb SET password='${pass}' WHERE email = '${email}'`;
+        return updateQuery;
+    }
 }
 module.exports = new dataBase();
