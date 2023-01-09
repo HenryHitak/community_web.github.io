@@ -1,6 +1,7 @@
 import dbService from "../services/dbService";
 import { useState } from "react";
 import "../css/Modal.css";
+import { Link } from "react-router-dom";
 
 export default function LoginModal({closeModal,openReg,loginFlag,adminFlag,loginFun}){
     const[msg,setMsg] = useState('');
@@ -50,6 +51,7 @@ export default function LoginModal({closeModal,openReg,loginFlag,adminFlag,login
                             <input type="password" name="pass" placeholder="password" />
                         </div>
                         <button type="submit">Login</button>
+                        <Link to="/email" onClick={()=>{closeModal(false)}}>Forgot your password?</Link>
                         <p>Not a member? <a onClick={()=>{closeModal(false);openReg(true)}}>Sign Up</a></p>
                     </form>
                     <p>{msg}</p>

@@ -8,6 +8,16 @@ class dbService{
         return httpCommon.post('/login', data);
     }
 
+    checkUser(data){
+        return httpCommon.post('/check', data);
+    }
+    resetPass(data){
+        return httpCommon.post('/reset', data);
+    }
+    loginEmail(data){
+        return httpCommon.post('/email', data);
+    }
+
     getData(){
         return httpCommon.post('/userdata');
     }

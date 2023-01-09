@@ -9,6 +9,8 @@ import Admin2 from './pages/Admin2';
 import { useState } from 'react';
 import Marketplace from './pages/Marketplace';
 import ProductDetails from './components/ProductDetails';
+import EmailConfirm from './pages/EmailConfirm';
+import PassReset from './pages/PassReset';
 
 export default function App(){
     const [user,setUser] = useState('');
@@ -29,6 +31,8 @@ export default function App(){
                         <Route path='myprofile' element={<Myprofile/>} LoggedUser={user} />
                         <Route path='admin' element={<Admin/>} />
                         <Route path='admindash' element={<Admin2/>} />
+                        <Route path='email' element={< EmailConfirm />}/>
+                        <Route path='reset' element={< PassReset />}/>
                         <Route path='*' element={<Nopage/>} />
                     </Route>
                 </Routes>
