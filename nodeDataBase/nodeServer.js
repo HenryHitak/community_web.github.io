@@ -1,9 +1,9 @@
 const formidable = require('formidable');
 const bcrypt = require('bcrypt');
 let url = require('url');
-var cookieSession = require('cookie-session');
-var express = require('express');
-var app = express();
+// var cookieSession = require('cookie-session');
+// var express = require('express');
+// var app = express();
 
 var http = require('http');
 var dataBase = require('./modules/dataBase');
