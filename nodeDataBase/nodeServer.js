@@ -2,17 +2,19 @@ const formidable = require('formidable');
 const bcrypt = require('bcrypt');
 let url = require('url');
 // var cookieSession = require('cookie-session');
-// var express = require('express');
-// var app = express();
+var express = require('express');
+var app = express();
 
 var http = require('http');
 var dataBase = require('./modules/dataBase');
 const nodemailer = require("nodemailer");
+const { time } = require('console');
+const { type } = require('os');
 var transporter = nodemailer.createTransport({
-        service: 'outlook',
+        service: 'gmail',
         auth: {
-          user: 'testComm_0101@outlook.com',
-          pass: 'testComm'
+          user: 'nh.3213.b.b@gmail.com',
+          pass: 'fxmzwafauiosbufe'
         }
       });
       
@@ -178,9 +180,9 @@ http.createServer((req,res)=>{
                                 console.log(result[0].password); //all info about this user
                                 // var token = '123';
                                 var mailOptions = {
-                                    from: 'testComm_0101@outlook.com',
+                                    from: 'nh.3213.b.b@gmail.com',
                                     to: fields.email,
-                                    subject: 'Sending Email using Node.js',
+                                    subject: 'Please reset password',
                                     //text + recent hash pass
                                     text: `Change your email from this link http://localhost:3000/reset?pass=${result[0].password}`
                                 };
@@ -189,17 +191,16 @@ http.createServer((req,res)=>{
                                         res.write('something is wrong');
                                         console.log(error);
                                     } else {
-                                        // res.setHeader('Set-Cookie','visited=true; Max-Age=3000; HttpOnly, Secure');
-                                        //wanna set cookie with rondom number, exp = 1hour to set timelimit for this link, but res.setHeader dosen't work
-                                        let length = 12;
-                                        let charset = "@#$&*0123456789ABCDEFGHIJKLMNbcdefghijklmnopqrstuvwxyz";
-                                        let key = "";
-                                        for (let i = 0, n = charset.length; i < length; ++i) {
-                                            key += charset.charAt(Math.floor(Math.random() * n));
+                                        console.log(info)
+                                Edbcon.query(dataBase.updateLinkQuery(`http://localhost:3000/reset?pass=${result[0].password}`,Math.floor(new Date() / 1000),fields.email),(er,rel)=>{
+                                            if(er) throw er;
+                                            if(rel.changedRows > 0){
+                                                console.log('rel');
+                                                console.log(rel);
+                                                res.write('Email has been sent successfully');
+                                            }
                                         }
-                                        res.write(key);
-                                        // res.write('Email has been sent successfully');
-                                        console.log(info);
+                                        ) 
                                     }
                                     return  res.end();
                                   });
@@ -212,26 +213,35 @@ http.createServer((req,res)=>{
                         }) 
                     })
                 })
-            
-                  break;
+                break;
 
-            // case '/check' :
-            //     let confirmKey = new formidable.IncomingForm();
-            //     confirmKey.parse(req,(err, fields,files)=>{
-            //         console.log(fields);
-            //         res.write(fields);
-            //     });
-            //     res.end();
-            //     break;
+            case '/validate' :
+                let exPass = new formidable.IncomingForm();
+                let Cdbcon = dataBase.dbConnect();
+                exPass.parse(req,(err,fields)=>{
+                    console.log(fields.exPass);//expass
+                    //if pass is in password and link -> if nowdate - exptime  < 900s(15min)
+                    Cdbcon.query(dataBase.selectQuery('user_tb',`password = '${fields.exPass}'`),(err,result)=>{
+                        if(err) throw err;
+                        if(result.length > 0){
+                            console.log(result[0].exptime);//all info about this user
+                            console.log(Math.floor(new Date() / 1000) - result[0].exptime)
+                            if(Math.floor(new Date() / 1000) - result[0].exptime > 900){
+                                res.write('link is expired');
+                                // return res.end();
+                            }else{
+                                res.write('true');
+                            } 
+                        }else{
+                            //go to login page
+                            res.write('Link is invalid');
+                        }
+                        return  res.end();
+                    }) 
+                })
+            break;
 
             case '/reset' :
-                //check on frontend
-                let parsedurl = url.parse(req.url,true);
-                //why parsedurl is null? querystring should be inside og it
-                console.log(res.getHeaders());
-                console.log(req.url);
-                console.log(req.url.query);
-                console.log(parsedurl);
                 let resetPass = new formidable.IncomingForm();
                 let Rdbcon = dataBase.dbConnect();
                 resetPass.parse(req,(err,fields,files)=>{
@@ -240,14 +250,20 @@ http.createServer((req,res)=>{
                             if(err) throw err;
                             async function passHash(password,email) {
                             const hash = await bcrypt.hash(password, 10);               
-                            Rdbcon.query(dataBase.updateQuery(hash,email),(err,result)=>{
+                            Rdbcon.query(dataBase.updateQuery('password',hash,email),(err,result)=>{
                                 console.log(result.changedRows);
                                 if(err) throw err;
                                 if(result.changedRows > 0){
-                                    res.write('update succesfully');
-                                    console.log('update succesfully');
-                                }
-                                else{
+                                Rdbcon.query(dataBase.updateLinkQuery(null,null,fields.email),(er,rel)=>{
+                                    if(er) throw er;
+                                    if(rel.changedRows > 0){
+                                            res.write('update succesfully');
+                                            console.log('update succesfully');
+                                            return res.end();
+                                        }
+
+                                    })
+                                }else{//link is not succesfully updated to null
                                     res.write('failed');
                                     console.log('failed');
                                 }
