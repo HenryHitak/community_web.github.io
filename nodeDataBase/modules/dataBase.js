@@ -34,9 +34,16 @@ class dataBase{
         return selectQuery;
     }
 
-    updateQuery(pass,email){
-        let updateQuery = `UPDATE user_tb SET password='${pass}' WHERE email = '${email}'`;
+    updateQuery(prop,val,email){
+        let updateQuery = `UPDATE user_tb SET ${prop}='${val}' WHERE email = '${email}'`;
+        console.log(updateQuery);
         return updateQuery;
+    }
+
+    updateLinkQuery(link,exp,email){
+        let updateLinkQuery = `UPDATE user_tb SET link='${link}', exptime='${exp}' WHERE email = '${email}'`;
+        // console.log(updateLinkQuery);
+        return updateLinkQuery;
     }
 }
 module.exports = new dataBase();
