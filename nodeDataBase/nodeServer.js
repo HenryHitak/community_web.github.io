@@ -1,20 +1,15 @@
 const formidable = require('formidable');
 const bcrypt = require('bcrypt');
-let url = require('url');
-// var cookieSession = require('cookie-session');
-var express = require('express');
-var app = express();
+require("dotenv").config();
 
 var http = require('http');
 var dataBase = require('./modules/dataBase');
 const nodemailer = require("nodemailer");
-const { time } = require('console');
-const { type } = require('os');
 var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
           user: 'nh.3213.b.b@gmail.com',
-          pass: 'fxmzwafauiosbufe'
+          pass: process.env.GMAIL_PASS
         }
       });
       
