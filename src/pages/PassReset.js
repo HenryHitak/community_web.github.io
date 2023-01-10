@@ -1,22 +1,25 @@
 import { useEffect, useState } from "react";
 import dbService from "../services/dbService";
-import { useCookies } from 'react-cookie';
 import { Navigate, useNavigate } from "react-router-dom";
-
-
 
 export default function PassReset(){
   const [msg, setMsg] = useState(null);
-  const [cookies, setCookie, removeCookie] = useCookies(['cookie']);
   const navigate = useNavigate();
- 
-  let checker = () =>{
-      if(!cookies.key){
-        console.log('error');
-        navigate('/home');
+
+  const checker = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let pass = urlParams.get('pass');
+    console.log(pass); //querystring from url(passed pass)
+    dbService.checkPass(pass)
+     .then(res => {
+        console.log(res.data);
+        if(res.data !== true){
+            navigate('/404'); //link is invalid or expired
+        }
+     })
+     .catch(err=>{console.log(err)});
     }
-  }
-  checker();
+    useEffect(()=>checker(),[]);
 
   const passResetSubmit = (event)=>{
       event.preventDefault();

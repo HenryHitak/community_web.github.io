@@ -11,9 +11,17 @@ class dbService{
     checkUser(data){
         return httpCommon.post('/check', data);
     }
+
     resetPass(data){
         return httpCommon.post('/reset', data);
     }
+
+    checkPass(pass){
+        let passData = new FormData();
+        passData.append('exPass',pass);
+        return httpCommon.post('/validate',passData);
+    }
+
     loginEmail(data){
         return httpCommon.post('/email', data);
     }
