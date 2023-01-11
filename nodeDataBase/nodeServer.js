@@ -8,65 +8,17 @@ const nodemailer = require("nodemailer");
 var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-<<<<<<< HEAD
-          user: 'nh.3213.b.b@gmail.com',
-          pass: process.env.GMAIL_PASS
-        }
-      });
-      
-=======
             user: 'nh.3213.b.b@gmail.com',
             pass: process.env.GMAIL_PASS
         }
     });
 
->>>>>>> 60aae88 (update login and reg)
 http.createServer((req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:3000');
     try{
         if(req.url === '/favicon.ico') return res.end();
         switch(req.url){
             case '/':
-<<<<<<< HEAD
-
-            case '/login':
-                let loginForm = new formidable.IncomingForm();
-                loginForm.parse(req,(err,fields,files)=>{
-                    let loginCon = dataBase.dbConnect();
-                    console.log(fields)
-                    console.log(fields.token)
-                    loginCon.connect((err)=>{
-                        if(err) throw err;
-                        //check if the user use right token
-                        if(fields.token == fields.tokenCon){
-                            loginCon.query(dataBase.selectQuery('user_tb',`email = '${fields.user}'`),(err,result)=>{
-                                if(err) throw err;
-                                if(result.length > 0){
-                                    async function passVerify(password){
-                                        const chkPass = await bcrypt.compare(password,result[0].password);
-                                        if(chkPass){
-                                            console.log(`${fields.user} login success`);
-                                        }
-                                        else{
-                                            console.log('login failed');
-                                        }
-                                    };
-                                    passVerify(fields.pass);
-                                    res.write(JSON.stringify(result));
-                                    
-                                }
-                                else{
-                                    console.log('login failed');
-                                }
-                                return res.end();
-                            })
-                        }else{
-                           return res.end();
-                        } 
-                    })
-                    
-                });
-=======
                 let formData = new formidable.IncomingForm();
                 let tDate = new Date().toLocaleString("en-CA",{timeZone: "America/Vancouver"}).slice(0,10);
                 formData.parse(req,(err,fields,files)=>{
@@ -129,7 +81,6 @@ http.createServer((req,res)=>{
                         })
                     }
                 })  
->>>>>>> 60aae88 (update login and reg)
                 break;
 
             // get all users information for admin user
@@ -221,29 +172,6 @@ http.createServer((req,res)=>{
 
                 break;
 
-<<<<<<< HEAD
-            case '/register':
-                let regForm = new formidable.IncomingForm();
-                regForm.parse(req,(err,fields,files)=>{
-                    let insertCon = dataBase.dbConnect();
-                    insertCon.connect((err)=>{
-                        if(err) throw err;
-                        async function passHash(password) {
-                            const hash = await bcrypt.hash(password, 10);
-                            let insertQuery = `INSERT INTO user_tb (email,password,firstname,lastname,dob,gender) VALUES ('${fields.email}','${hash}','${fields.firstname}','${fields.lastname}','${fields.dob}','${fields.gender}')`;
-                            insertCon.query(insertQuery,(err,result)=>{
-                                if(err) throw err;
-                                res.write(result.affectedRows + 'Rows inserted');
-                                return res.end();
-                            })
-                          }  
-                        passHash(fields.password);
-                    });
-                });
-                break;
-
-=======
->>>>>>> 60aae88 (update login and reg)
             case '/email':
                 let emailConfirm = new formidable.IncomingForm();
                 let Edbcon = dataBase.dbConnect();
@@ -279,11 +207,7 @@ http.createServer((req,res)=>{
                                         ) 
                                     }
                                     return  res.end();
-<<<<<<< HEAD
-                                  });
-=======
                                 });
->>>>>>> 60aae88 (update login and reg)
                             }
                             else{
                                 console.log('email is wrong');
