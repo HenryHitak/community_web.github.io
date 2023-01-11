@@ -8,14 +8,14 @@ export default function LoginModal({closeModal,openReg,loginFlag,adminFlag,login
     const[msg,setMsg] = useState('');
     function makeid(){
         var result = '';
-        console.log(process.env)
+        console.log(process.env);
         var characters = process.env.REACT_APP_CHARACTERS;
         let length = process.env.REACT_APP_LENGTH;
         var charactersLength = characters.length;
         for ( var i = 0; i < length; i++ ) {
-          result += characters.charAt(Math.floor(Math.random() * 
-     charactersLength));
-       }
+            result += characters.charAt(Math.floor(Math.random() * 
+            charactersLength));
+        }
        return result; //random token
     }
 

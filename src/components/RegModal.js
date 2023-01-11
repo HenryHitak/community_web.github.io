@@ -12,7 +12,6 @@ export default function RegModal({closeModal}){
         let regFormData = new FormData(event.target);
         dbService.registerUser(regFormData)
         .then(res=>{
-            console.log(res.data);
             if(res.data == true){
                 setMsg('');
                 setRegSucc(true);
