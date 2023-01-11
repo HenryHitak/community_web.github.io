@@ -8,17 +8,26 @@ const nodemailer = require("nodemailer");
 var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
+<<<<<<< HEAD
           user: 'nh.3213.b.b@gmail.com',
           pass: process.env.GMAIL_PASS
         }
       });
       
+=======
+            user: 'nh.3213.b.b@gmail.com',
+            pass: process.env.GMAIL_PASS
+        }
+    });
+
+>>>>>>> 60aae88 (update login and reg)
 http.createServer((req,res)=>{
     res.setHeader('Access-Control-Allow-Origin','http://localhost:3000');
     try{
         if(req.url === '/favicon.ico') return res.end();
         switch(req.url){
             case '/':
+<<<<<<< HEAD
 
             case '/login':
                 let loginForm = new formidable.IncomingForm();
@@ -57,6 +66,70 @@ http.createServer((req,res)=>{
                     })
                     
                 });
+=======
+                let formData = new formidable.IncomingForm();
+                let tDate = new Date().toLocaleString("en-CA",{timeZone: "America/Vancouver"}).slice(0,10);
+                formData.parse(req,(err,fields,files)=>{
+                    // for login
+                    if(fields.formChk == "loginForm"){
+                        let loginCon = dataBase.dbConnect();
+                        loginCon.connect((err)=>{
+                            if(err) throw err;
+                            //check if the user use right token
+                            if(fields.token == fields.tokenCon){
+                                loginCon.query(dataBase.selectQuery('user_tb',`email = '${fields.user}'`),(err,result)=>{
+                                    if(err) throw err;
+                                    if(result.length > 0){
+                                        bcrypt.compare(fields.pass,result[0].password, (err,chkPass)=>{
+                                            if(chkPass){
+                                                console.log(`${fields.user} login success`);
+                                                res.write(JSON.stringify(result));
+                                                return res.end();
+                                            }
+                                            else{
+                                                console.log('login failed');
+                                                return res.end();
+                                            }
+                                        });
+                                    }
+                                    else{
+                                        console.log('login failed');
+                                        return res.end();
+                                    }
+                                })
+                            }
+                            else{
+                                return res.end();
+                            }
+                        })
+                    }
+                    // for register
+                    else if(fields.formChk == "regForm"){
+                        let insertCon = dataBase.dbConnect();
+                        insertCon.connect((err)=>{
+                            if(err) throw err;
+                            insertCon.query(dataBase.selectQuery('user_tb',`email = '${fields.email}'`),(err,result)=>{
+                                if(err) throw err;
+                                if(result.length <= 0){
+                                    bcrypt.hash(fields.password, 10,function(err, hash){
+                                        if(err) throw err;
+                                        let insertQuery = `INSERT INTO user_tb (email,password,firstname,lastname,dob,gender,role,join_date) VALUES ('${fields.email}','${hash}','${fields.firstname}','${fields.lastname}','${fields.dob}','${fields.gender}','${fields.regType}','${tDate}')`;
+                                        insertCon.query(insertQuery,(err,result)=>{
+                                            if(err) throw err;
+                                            res.write('true');
+                                            return res.end();
+                                        })
+                                    })
+                                }
+                                else{
+                                    res.write('false');
+                                    return res.end();
+                                }
+                            })
+                        })
+                    }
+                })  
+>>>>>>> 60aae88 (update login and reg)
                 break;
 
             // get all users information for admin user
@@ -148,6 +221,7 @@ http.createServer((req,res)=>{
 
                 break;
 
+<<<<<<< HEAD
             case '/register':
                 let regForm = new formidable.IncomingForm();
                 regForm.parse(req,(err,fields,files)=>{
@@ -168,6 +242,8 @@ http.createServer((req,res)=>{
                 });
                 break;
 
+=======
+>>>>>>> 60aae88 (update login and reg)
             case '/email':
                 let emailConfirm = new formidable.IncomingForm();
                 let Edbcon = dataBase.dbConnect();
@@ -203,7 +279,11 @@ http.createServer((req,res)=>{
                                         ) 
                                     }
                                     return  res.end();
+<<<<<<< HEAD
                                   });
+=======
+                                });
+>>>>>>> 60aae88 (update login and reg)
                             }
                             else{
                                 console.log('email is wrong');
