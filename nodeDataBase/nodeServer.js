@@ -25,30 +25,35 @@ http.createServer((req,res)=>{
                 loginForm.parse(req,(err,fields,files)=>{
                     let loginCon = dataBase.dbConnect();
                     console.log(fields)
+                    console.log(fields.token)
                     loginCon.connect((err)=>{
                         if(err) throw err;
-                        loginCon.query(dataBase.selectQuery('user_tb',`email = '${fields.user}'`),(err,result)=>{
-                            if(err) throw err;
-                            if(result.length > 0){
-                                async function passVerify(password){
-                                    const chkPass = await bcrypt.compare(password,result[0].password);
-                                    if(chkPass){
-                                        console.log(`${fields.user} login success`);
-                                    }
-                                    else{
-                                        console.log('login failed');
-                                    }
-                                };
-                                passVerify(fields.pass);
-                                res.write(JSON.stringify(result));
-                                
-                            }
-                            else{
-                                console.log('login failed');
-                            }
-                            return res.end();
-                        })
-                        
+                        //check if the user use right token
+                        if(fields.token == fields.tokenCon){
+                            loginCon.query(dataBase.selectQuery('user_tb',`email = '${fields.user}'`),(err,result)=>{
+                                if(err) throw err;
+                                if(result.length > 0){
+                                    async function passVerify(password){
+                                        const chkPass = await bcrypt.compare(password,result[0].password);
+                                        if(chkPass){
+                                            console.log(`${fields.user} login success`);
+                                        }
+                                        else{
+                                            console.log('login failed');
+                                        }
+                                    };
+                                    passVerify(fields.pass);
+                                    res.write(JSON.stringify(result));
+                                    
+                                }
+                                else{
+                                    console.log('login failed');
+                                }
+                                return res.end();
+                            })
+                        }else{
+                           return res.end();
+                        } 
                     })
                     
                 });
@@ -254,9 +259,7 @@ http.createServer((req,res)=>{
                                     if(rel.changedRows > 0){
                                             res.write('update succesfully');
                                             console.log('update succesfully');
-                                            return res.end();
                                         }
-
                                     })
                                 }else{//link is not succesfully updated to null
                                     res.write('failed');
