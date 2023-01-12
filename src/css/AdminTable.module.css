@@ -4,7 +4,7 @@
 }
 
 .admincontainer {
-  max-width: 1000px;
+  max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 10px;
@@ -16,7 +16,7 @@
 
 .postcontainer {
   background-color: rgb(240, 236, 236);
-  max-width: 1000px;
+  max-width: 1400px;
   margin-top: 50px;
   margin-left: auto;
   margin-right: auto;
@@ -32,7 +32,7 @@
 h2,h3 {
   font-size: 26px;
   text-align: center;
-  max-width: 1000px;
+  max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 10px;
@@ -92,7 +92,7 @@ h3 {
   text-align: center;
 }
 .col_2 {
-  flex-basis: 15%;
+  flex-basis: 13%;
   text-align: center;
 }
 .col_3 {
@@ -112,12 +112,12 @@ h3 {
   text-align: center;
 }
 .col_7 {
-  flex-basis: 10%;
+  flex-basis: 8%;
   text-align: center;
 }
 .col_8 {
   display: flex;
-  flex-basis: 10%;
+  flex-basis: 15%;
   text-align: center;
 }
 
@@ -125,7 +125,7 @@ h3 {
   display: flex;
   align-items: center;
   justify-content: right;
-  max-width: 1000px;
+  max-width: 1400px;
   margin-left: auto;
   margin-right: auto;
   padding-left: 10px;
@@ -157,28 +157,36 @@ h3 {
   background-color: rgb(166, 221, 246);
 }
 
-.search {
-  display: flex;
-  align-items: flex-end;
-  justify-content: right;
-  width: 900px;
-  margin-left: auto;
-  margin-right: auto;
+.search{
   padding-left: 10px;
   padding-right: 10px;
+
+  display: flex;
+  justify-content: space-between;
 }
 
-.search > input {
+.search form {
+  display: flex;
+}
+
+.search input{
   border-radius: 10px;
   padding: 0.5%;
-  height: 20px;
+  text-align: center;
+  height: 27px;
   border: 0.2px solid gray;
   margin-right: 5px;
 }
 
-.search > button {
+.search select {
   border-radius: 10px;
-  padding: 1%;
+  width: 50px;
+  text-align: center;
+}
+
+.search button {
+  border-radius: 10px;
+  padding: 2%;
   height: 30px;
   border: 0.2px solid gray;
   background-color: rgb(193, 193, 249);
@@ -189,7 +197,7 @@ h3 {
   justify-content: center;
 }
 
-.search > button:hover {
+.search button:hover {
   background-color: rgb(140, 140, 240);
 }
 
