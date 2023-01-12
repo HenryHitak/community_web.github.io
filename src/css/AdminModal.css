@@ -1,0 +1,27 @@
+.amodalBg {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  position: fixed;
+  z-index: 2;
+  justify-content: center;
+  align-items: top;
+}
+
+
+.amodalRegContent {
+  width: 20%;
+  height: 50%;
+  border-radius: 15px;
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: flex;
+  flex-direction: column;
+  padding: 3%;
+}
+
+.AdminMsg {
+  display: flex;
+  flex-direction: column;
+}
