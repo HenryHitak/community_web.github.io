@@ -25,8 +25,13 @@ class dataBase{
     }
 
     blockQuery(key,status){
-        let selectQuery = `UPDATE user_tb SET status='${status}' WHERE user_id = ${key}`;
-        return selectQuery;
+        if(status == "block" || status == "active"){
+            let selectQuery = `UPDATE user_tb SET status='${status}' WHERE user_id = ${key}`;
+            return selectQuery;
+        }else if(status == "delete"){
+            let selectQuery = `DELETE FROM user_tb WHERE user_id = ${key}`;
+            return selectQuery;
+        }
     }
 
     deleteQuery(column,key,request){
