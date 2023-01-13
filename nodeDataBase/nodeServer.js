@@ -182,7 +182,6 @@ http.createServer((req,res)=>{
                             if(err) throw err;
                             if(result.length > 0){
                                 console.log(result[0].password); //all info about this user
-                                // var token = '123';
                                 var mailOptions = {
                                     from: 'nh.3213.b.b@gmail.com',
                                     to: fields.email,
