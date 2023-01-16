@@ -9,11 +9,11 @@ export default function AdminModal(props){
     const[test1,test2] = useState(false);
 
     //update or activate selected user
-    const update = (event,key,action)=>{
+    const update = (event,key,action,email = null)=>{
       event.preventDefault();
       test2(true)
 
-      dbService.update(key,action)
+      dbService.update(key,action,event.target,email)
       .then(res=>{
           console.log(res)
       })
@@ -52,7 +52,7 @@ export default function AdminModal(props){
                     :
                     <div className="modalContent_body">
                         <h1>Are you sure you want to {props.action} "{props.test.email} ?"</h1>
-                        <form onSubmit={(event)=>update(event,props.test.userId,props.action)}>
+                        <form onSubmit={(event)=>update(event,props.test.userId,props.action,props.test.email)}>
                             <div className="AdminMsg">
                                 <label htmlFor="email">Send a message to the user</label>
                                 <input type="text" name="EmailMsg" placeholder="Why" required/>
