@@ -1,54 +1,56 @@
-var mysql = require('mysql');
-class dataBase{
-    constructor(hostDB = "localhost", dbUser="root", dbPass="",dbName="community_app"){
-        this.dbConfig = {
-            host: hostDB,
-            user: dbUser,
-            password: dbPass,
-            database: dbName,
-        }
+import httpCommon from "./httpCommon";
+class dbService{
+    registerUser(data){
+        return httpCommon.post('/', data);
+    }
+
+    loginUser(data){
+        return httpCommon.post('/', data);
+    }
+
+    checkUser(data){
+        return httpCommon.post('/check', data);
+    }
+
+    resetPass(data){
+        return httpCommon.post('/reset', data);
+    }
+
+    checkPass(pass){
+        let passData = new FormData();
+        passData.append('exPass',pass);
+        return httpCommon.post('/validate',passData);
+    }
+
+    loginEmail(data){
+        return httpCommon.post('/email', data);
+    }
+
+    getData(){
+        return httpCommon.post('/userdata');
+    }
+
+    change(test,test2){
+        let formdata = new FormData();
+        formdata.append("id",test);
+        formdata.append("table",test2);
+        return httpCommon.post('/change',formdata);
+    }
+
+    // get post informtion
+    getPosts(tablename){
+        let formdata = new FormData();
+        formdata.append("table",tablename);
+        return httpCommon.post('/postdata',formdata);
+    }
+
+    update(key,action,form,email = null){
+        let formdata = new FormData(form);
+        formdata.append("key",key);
+        formdata.append("status",action);
+        formdata.append('email',email);
+        return httpCommon.post('/block',formdata);
     }
     
-    dbConnect(){
-        let dbCon = mysql.createConnection(this.dbConfig);
-        return dbCon;
-    }
-
-    selectQuery(tableName,whereCalus = 1){
-        let selectQuery = `SELECT * FROM ${tableName} WHERE ${whereCalus}`;
-        return selectQuery;
-    }
-
-    selectJoinQuery(tableName,tableName2,whereCalus = "1"){
-        let selectQuery = `SELECT * FROM ${tableName} INNER JOIN ${tableName2} ON ${tableName}.user_id = ${tableName2}.user_id WHERE ${whereCalus}`;
-        return selectQuery;
-    }
-
-    blockQuery(key,status){
-        if(status == "block" || status == "active"){
-            let selectQuery = `UPDATE user_tb SET status='${status}' WHERE user_id = ${key}`;
-            return selectQuery;
-        }else if(status == "delete"){
-            let selectQuery = `DELETE FROM user_tb WHERE user_id = ${key}`;
-            return selectQuery;
-        }
-    }
-
-    deleteQuery(column,key,request){
-        let selectQuery = `DELETE FROM ${request} WHERE ${column} = ${key}`;
-        return selectQuery;
-    }
-
-    updateQuery(prop,val,email){
-        let updateQuery = `UPDATE user_tb SET ${prop}='${val}' WHERE email = '${email}'`;
-        console.log(updateQuery);
-        return updateQuery;
-    }
-
-    updateLinkQuery(link,exp,email){
-        let updateLinkQuery = `UPDATE user_tb SET link='${link}', exptime='${exp}' WHERE email = '${email}'`;
-        // console.log(updateLinkQuery);
-        return updateLinkQuery;
-    }
 }
-module.exports = new dataBase();
+export default new dbService();

@@ -135,8 +135,24 @@ http.createServer((req,res)=>{
                             if(err) throw err;
                             Bdbcon.query(dataBase.blockQuery(fields.key,fields.status),(err,result)=>{
                                 if(err) throw err;
-                                if(result.length > 0){
+                                if(result.changedRows > 0){
                                     console.log('blocked');
+                                    //send block email to blocked user
+                                    var mailOptions = {
+                                        from: 'nh.3213.b.b@gmail.com',
+                                        to: fields.email, 
+                                        subject: 'You are blocked',
+                                        text: `You are blocked by admin.The reason is ${fields.EmailMsg} If you want us to unblock, please contatc below email.`
+                                    };
+                                    transporter.sendMail(mailOptions, function (error, info){
+                                        if (error) {
+                                            // res.write(false);
+                                            res.end();
+                                        } else {            
+                                            res.write('blocked');
+                                            res.end();
+                                        }
+                                    });
                                 }
                                 else{
                                     console.log('blocking failed');
@@ -176,13 +192,12 @@ http.createServer((req,res)=>{
                 let emailConfirm = new formidable.IncomingForm();
                 let Edbcon = dataBase.dbConnect();
                 emailConfirm.parse(req,(err,fields,files)=>{
-                    Edbcon.connect((err)=>{
-                        if(err) throw err;
-                        Edbcon.query(dataBase.selectQuery('user_tb',`email = '${fields.email}'`),(err,result)=>{
-                            if(err) throw err;
+                    Edbcon.connect((er)=>{
+                        if(er) throw er;
+                        Edbcon.query(dataBase.selectQuery('user_tb',`email = '${fields.email}'`),(error,result)=>{
+                            if(error) throw error;
                             if(result.length > 0){
-                                console.log(result[0].password); //all info about this user
-                                // var token = '123';
+                                console.log(result[0]); //all info
                                 var mailOptions = {
                                     from: 'nh.3213.b.b@gmail.com',
                                     to: fields.email,
@@ -192,30 +207,29 @@ http.createServer((req,res)=>{
                                 };
                                 transporter.sendMail(mailOptions, function (error, info){
                                     if (error) {
-                                        res.write('something is wrong');
-                                        console.log(error);
-                                    } else {
-                                        console.log(info)
-                                Edbcon.query(dataBase.updateLinkQuery(`http://localhost:3000/reset?pass=${result[0].password}`,Math.floor(new Date() / 1000),fields.email),(er,rel)=>{
+                                        res.write(false);
+                                        res.end();
+                                    } else {            
+                                        Edbcon.query(dataBase.updateLinkQuery(`http://localhost:3000/reset?pass=${result[0].password}`,Math.floor(new Date() / 1000),fields.email),(er,rel)=>{
                                             if(er) throw er;
                                             if(rel.changedRows > 0){
-                                                console.log('rel');
-                                                console.log(rel);
-                                                res.write('Email has been sent successfully');
-                                            }
+                                                res.write(fields.email);
+                                                res.end();
+                                            }      
+                                            // return res.end();
                                         }
                                         ) 
                                     }
-                                    return  res.end();
                                 });
                             }
                             else{
                                 console.log('email is wrong');
-                                res.write('Email is wrong');
-                                return  res.end();
+                                res.write(false);
+                                res.end();
                             }
                         }) 
                     })
+                    // return  res.end();
                 })
                 break;
 
@@ -223,7 +237,7 @@ http.createServer((req,res)=>{
                 let exPass = new formidable.IncomingForm();
                 let Cdbcon = dataBase.dbConnect();
                 exPass.parse(req,(err,fields)=>{
-                    console.log(fields.exPass);//expass
+                    console.log(fields.exPass); 
                     //if pass is in password and link -> if nowdate - exptime  < 900s(15min)
                     Cdbcon.query(dataBase.selectQuery('user_tb',`password = '${fields.exPass}'`),(err,result)=>{
                         if(err) throw err;
@@ -255,17 +269,20 @@ http.createServer((req,res)=>{
                             async function passHash(password,email) {
                             const hash = await bcrypt.hash(password, 10);               
                             Rdbcon.query(dataBase.updateQuery('password',hash,email),(err,result)=>{
-                                console.log(result.changedRows);
+                                // console.log(result);
                                 if(err) throw err;
                                 if(result.changedRows > 0){
                                 Rdbcon.query(dataBase.updateLinkQuery(null,null,fields.email),(er,rel)=>{
+                                    // console.log(rel);
                                     if(er) throw er;
                                     if(rel.changedRows > 0){
                                             res.write('update succesfully');
                                             console.log('update succesfully');
+                                            res.end();
                                         }
-                                    })
-                                }else{//link is not succesfully updated to null
+                                       })
+                                }else{
+                                    //link is not succesfully updated to null
                                     res.write('failed');
                                     console.log('failed');
                                 }
@@ -277,7 +294,7 @@ http.createServer((req,res)=>{
                     }
                 })  
                 break;
-
+                
             default:
                 res.writeHead(404,{'Content-Type':'text/html'});
                 res.write('Not found');
