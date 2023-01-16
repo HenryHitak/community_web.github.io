@@ -30,7 +30,10 @@ const SideBar = ({openLogin,loginFlag,adminFlag,logoutFlag}) => {
     logoutFlag();
   }
   return <section id="sidebar" className={isOpened ? "isOpened" : "isClosed"}>
-    <button onClick={()=>setIsOpened(!isOpened)}>{isOpened ? <HiArrowNarrowLeft/> : <HiMenu onMouseEnter={(e)=>hoverIcon(e)}/>}</button>
+    <button onClick={()=>{
+      setIsOpened(!isOpened);
+      $("#hover-menu").hide();
+    }}>{isOpened ? <HiArrowNarrowLeft/> : <HiMenu onMouseEnter={(e)=>hoverIcon(e)}/>}</button>
     <div></div>
     <article>
       {isOpened ? <div onClick={(e)=>openList(e)}><HiUserCircle/>Login</div> : <HiUserCircle onMouseEnter={(e)=>hoverIcon(e)}/>}

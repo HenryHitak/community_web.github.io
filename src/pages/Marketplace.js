@@ -19,7 +19,7 @@ export default function Marketplace(){
 
   const loadMore = (e) => {
     setListIndex(listIndex + 8);
-    if(list.length < listIndex){
+    if(list.length < listIndex + 8){
       $(e.target).hide();
     }
   }
