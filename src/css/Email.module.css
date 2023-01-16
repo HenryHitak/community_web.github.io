@@ -1,0 +1,46 @@
+.emailconf,
+.emailConForm {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+}
+
+.emailConForm {
+  width: 50%;
+}
+
+.emailConForm button {
+  width: 30%;
+}
+
+.afteremail {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+  row-gap: 1.5rem;
+}
+
+.resetconf {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1.5rem;
+  width: 18%;
+  padding: 3%;
+}
+
+.resetconf div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.resetconf button {
+  width: 30%;
+}
+
+.succes {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
