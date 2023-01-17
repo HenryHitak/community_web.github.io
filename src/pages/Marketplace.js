@@ -19,7 +19,7 @@ export default function Marketplace(){
 
   const loadMore = (e) => {
     setListIndex(listIndex + 8);
-    if(list.length < listIndex){
+    if(list.length < listIndex + 8){
       $(e.target).hide();
     }
   }
@@ -32,7 +32,7 @@ export default function Marketplace(){
             </article>
           </form>
         </section>
-        <section className={styles.reco_sec}>
+        <section id="items" className={styles.reco_sec}>
           <nav className={styles.reco_nav}>
             <h2>Recommended items for you</h2>
             <h2>Your location is</h2>
@@ -54,6 +54,11 @@ export default function Marketplace(){
           })}
           </ul>
           <button className={styles.loadBtn} onClick={(e)=>loadMore(e)}>View more</button>
+        </section>
+        <section id="sponsered">
+          <nav>
+            <h2>Sponsered</h2>
+          </nav>
         </section>
       </Fragment>
   )
