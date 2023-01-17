@@ -1,4 +1,4 @@
-section:first-child{
+.bar:first-child{
   width: 248px;
   height: 100vh;
   background-color: rgba(80, 80, 80, .8);
@@ -9,7 +9,7 @@ section:first-child{
   /* overflow: hidden; */
   position: fixed;
 }
-section > button{
+.bar > button{
   margin: 0 0 0 auto;
   background-color: transparent;
   border: none;
@@ -17,18 +17,18 @@ section > button{
   color: whitesmoke;
   cursor: pointer;
 }
-section:first-child > button > svg{
+.bar:first-child > button > svg{
   padding: 0;
   padding-top: 0.8rem;
 }
-section:first-child > div{
+.bar:first-child > div{
   width: 40px;
   height: 1.5px;
   margin: 0.8rem 0;
   background-color: whitesmoke;
   transition: .4s width;
 }
-section:first-child > article{
+.bar:first-child > article{
   width: 228px;
   display: flex;
   flex-direction: column;
@@ -36,7 +36,7 @@ section:first-child > article{
   padding-left: 2rem;
   margin-bottom: 1rem;
 }
-section:first-child > article ul{
+.bar:first-child > article ul{
   margin: 0;
   list-style: none;
   height: 0px;
@@ -46,17 +46,17 @@ section:first-child > article ul{
   flex-direction: column;
   row-gap: 0.5rem;
 }
-section:first-child > article li{
+.bar:first-child > article li{
   font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
 }
-section:first-child > article a{
+.bar:first-child > article a{
   color: whitesmoke;
   text-decoration: none;
 }
-section:first-child > article a:hover{
+.bar:first-child > article a:hover{
   text-decoration: underline;
 }
-section:first-child div{
+.bar:first-child div{
   display: flex;
   align-items: center;
   column-gap: 0.6rem;
@@ -68,20 +68,20 @@ section:first-child div{
   color: whitesmoke;
   cursor: pointer;
 }
-section:nth-child(2){
+.bar:nth-child(2){
   margin-left: 60px;
   margin-right: 60px;
 }
-svg{
+.bar svg{
   font-size: 2rem;
   color: whitesmoke;
   padding: 0.8rem 0;
 }
-aside{
+.bar > aside{
   position: absolute;
   left: 60px;
 }
-aside ul{
+.bar > aside ul{
   list-style: none;
   width: 100px;
   padding: 10%;
@@ -89,12 +89,12 @@ aside ul{
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
-aside a{
+.bar > aside a{
   font-size: 1.1rem;
   color: whitesmoke;
   font-family: system-ui, 'Segoe UI', 'Open Sans', 'Helvetica Neue', sans-serif;
   text-decoration: none;
 }
-aside a:hover{
+.bar > aside a:hover{
   text-decoration: underline;
 }

@@ -13,13 +13,11 @@ const SideBar = ({openLogin,loginFlag,adminFlag,logoutFlag}) => {
   }
   const hoverIcon = (e) => {
     if(!isOpened && $($(e.target).parent().children()[1]).html() != undefined) {
-      console.log(e.target.getBoundingClientRect().top);
       const contents = `<ul>${$($(e.target).parent().children()[1]).html()}</ul>`;
       $("#hover-menu").html(contents);
       $("#hover-menu").show();
       $("#hover-menu").css("top", `${e.target.getBoundingClientRect().top-10}px`)
       $($("#hover-menu").children()[0]).addClass("hover-list");
-      console.log($($("#hover-menu").children()[0]));
     }
   }
   const loginSideBar = ()=>{
@@ -29,7 +27,7 @@ const SideBar = ({openLogin,loginFlag,adminFlag,logoutFlag}) => {
   const logout = ()=>{
     logoutFlag();
   }
-  return <section id="sidebar" className={isOpened ? "isOpened" : "isClosed"}>
+  return <section id="sidebar" className={isOpened ? `isOpened ${styles.bar}` : `isClosed ${styles.bar}`}>
     <button onClick={()=>{
       setIsOpened(!isOpened);
       $("#hover-menu").hide();
