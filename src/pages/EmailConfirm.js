@@ -17,7 +17,22 @@ export default function EmailConfirm(){
       .then(res=>{
         console.log(res);
         if(res.data !== false){
-          setMsg('link');
+          setMsg('sent');
+          setUserEmail(res.data);
+        }
+        // setUserEmail(res.data)
+      })
+      .catch(err=>{console.log(err)});
+  }
+
+  const Emailresend = () =>{
+      let EmailFormData = new FormData();
+      EmailFormData.append('email',useremail);
+      dbService.loginEmail(EmailFormData)
+      .then(res=>{
+        console.log(res);
+        if(res.data !== false){
+          setMsg('resent');
           setUserEmail(res.data);
         }
         // setUserEmail(res.data)
@@ -43,10 +58,10 @@ export default function EmailConfirm(){
         <div className={styles.afteremail}>
         <FontAwesomeIcon icon={ faEnvelope } />         
           <h1>Check Your Email</h1>
-          <p>We sent password reset link to {useremail}.<br></br>The link will be expired after 15 minutes.</p>
+          <p>We {msg} password reset link to {useremail}.<br></br>The link will be expired after 15 minutes.</p>
           <div>
             <p>Didn't receive the email?</p>
-            <button onClick={()=>setMsg(null)}>Click here</button>
+            <button onClick={()=>Emailresend()}>Resend</button>
           </div>
           <Link to="/home">Back to Login</Link>
         </div>
