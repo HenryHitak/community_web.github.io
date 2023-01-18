@@ -1,5 +1,4 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-
 import Nav from './pages/Nav';
 import Home from './pages/Home';
 import Contact from './pages/Contact';
@@ -7,11 +6,11 @@ import Myprofile from './pages/Myprofile';
 import Nopage from './pages/Nopage';
 import Admin from './pages/Amin';
 import Admin2 from './pages/Admin2';
-import EmailConfirm from './pages/EmailConfirm';
-import PassReset from './pages/PassReset';
 import { useState } from 'react';
 import Marketplace from './pages/Marketplace';
 import ProductDetails from './components/ProductDetails';
+import EmailConfirm from './pages/EmailConfirm';
+import PassReset from './pages/PassReset';
 
 export default function App(){
     const [user,setUser] = useState('');

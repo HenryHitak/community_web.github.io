@@ -1,18 +1,27 @@
 import httpCommon from "./httpCommon";
 class dbService{
     registerUser(data){
-        return httpCommon.post('/register', data);
+        return httpCommon.post('/', data);
     }
 
     loginUser(data){
-        return httpCommon.post('/login', data);
+        return httpCommon.post('/', data);
     }
+
     checkUser(data){
         return httpCommon.post('/check', data);
     }
+
     resetPass(data){
         return httpCommon.post('/reset', data);
     }
+
+    checkPass(pass){
+        let passData = new FormData();
+        passData.append('exPass',pass);
+        return httpCommon.post('/validate',passData);
+    }
+
     loginEmail(data){
         return httpCommon.post('/email', data);
     }
@@ -35,10 +44,11 @@ class dbService{
         return httpCommon.post('/postdata',formdata);
     }
 
-    update(key,action){
-        let formdata = new FormData();
+    update(key,action,form,email = null){
+        let formdata = new FormData(form);
         formdata.append("key",key);
         formdata.append("status",action);
+        formdata.append('email',email);
         return httpCommon.post('/block',formdata);
     }
     
