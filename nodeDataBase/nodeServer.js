@@ -135,9 +135,8 @@ http.createServer((req,res)=>{
                         Bdbcon.connect((err)=>{
                             if(err) throw err;
                             Bdbcon.query(dataBase.blockQuery(fields.key,fields.status),(err,result)=>{
-                                console.log(fields);
-                                console.log(fields.form);
-                                //console.log(fields.email); picked user email
+                                // console.log(fields);
+                                // console.log(fields.form);
                                 if(err) throw err;
                                 if(result.changedRows > 0){
                                     console.log('blocked');
