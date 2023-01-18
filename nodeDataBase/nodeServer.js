@@ -23,6 +23,7 @@ http.createServer((req,res)=>{
                 let tDate = new Date().toLocaleString("en-CA",{timeZone: "America/Vancouver"}).slice(0,10);
                 formData.parse(req,(err,fields,files)=>{
                     // for login
+                    console.log(fields);
                     if(fields.formChk == "loginForm"){
                         let loginCon = dataBase.dbConnect();
                         loginCon.connect((err)=>{
@@ -134,16 +135,43 @@ http.createServer((req,res)=>{
                         Bdbcon.connect((err)=>{
                             if(err) throw err;
                             Bdbcon.query(dataBase.blockQuery(fields.key,fields.status),(err,result)=>{
+                                console.log(fields);
+                                console.log(fields.form);
+                                //console.log(fields.email); picked user email
                                 if(err) throw err;
                                 if(result.changedRows > 0){
                                     console.log('blocked');
                                     //send block email to blocked user
-                                    var mailOptions = {
-                                        from: 'nh.3213.b.b@gmail.com',
-                                        to: fields.email, 
-                                        subject: 'You are blocked',
-                                        text: `You are blocked by admin.The reason is ${fields.EmailMsg} If you want us to unblock, please contatc below email.`
-                                    };
+                                    var mailOptions = "";
+                                    if(fields.status == "block"){
+                                        mailOptions = {
+                                            from: 'nh.3213.b.b@gmail.com',
+                                            to: fields.email,
+                                            subject: 'Blocked Email',
+                                            html: 
+                                            `<div>
+                                                <h3>You are Blocked by admin</h3>
+                                                <P>Reason : ${fields.EmailMsg}</P>
+                                                <p>If you have some problems,please contact us</p>
+                                                <P>taiwancmty@gmail.com</P>
+                                            </div>`
+                                        };
+                                    }else if(fields.status == "active"){
+                                        mailOptions = {
+                                            from: 'nh.3213.b.b@gmail.com',
+                                            to: fields.email, 
+                                            subject: 'Unblocked Email',
+                                            html: 
+                                            `<div>
+                                                <h3>You are unblocked by admin</h3>
+                                                <P>Reason : ${fields.EmailMsg}</P>
+                                                <p>If you have some problems,please contact us</p>
+                                                <P>taiwancmty@gmail.com</P>
+                                            </div>`
+                                        };
+
+                                    }
+                                  
                                     transporter.sendMail(mailOptions, function (error, info){
                                         if (error) {
                                             // res.write(false);
@@ -169,7 +197,7 @@ http.createServer((req,res)=>{
                     let tablename = new formidable.IncomingForm();
                     let dbcon3 = dataBase.dbConnect();
                     tablename.parse(req,(err,fields,files)=>{
-                        console.log(fields.table)
+                        console.log(fields.table);
                         dbcon3.connect((err)=>{
                             if(err) throw err;
                             dbcon3.query(dataBase.selectJoinQuery(fields.table,'user_tb'),(err,result)=>{
@@ -201,9 +229,16 @@ http.createServer((req,res)=>{
                                 var mailOptions = {
                                     from: 'nh.3213.b.b@gmail.com',
                                     to: fields.email,
-                                    subject: 'Please reset password',
+                                    subject: 'Reset password',
                                     //text + recent hash pass
-                                    text: `Change your email from this link http://localhost:3000/reset?pass=${result[0].password}`
+                                    html:`
+                                        <div>
+                                            <h3>Change your email</h3>
+                                            <p>Link: http://localhost:3000/reset?pass=${result[0].password}</p>
+                                            <p>If you have some problems,please contact us</p>
+                                            <P>taiwancmty@gmail.com</P>
+                                        </div>
+                                    `
                                 };
                                 transporter.sendMail(mailOptions, function (error, info){
                                     if (error) {
@@ -280,7 +315,7 @@ http.createServer((req,res)=>{
                                             console.log('update succesfully');
                                             res.end();
                                         }
-                                       })
+                                    })
                                 }else{
                                     //link is not succesfully updated to null
                                     res.write('failed');
@@ -294,7 +329,7 @@ http.createServer((req,res)=>{
                     }
                 })  
                 break;
-                
+
             default:
                 res.writeHead(404,{'Content-Type':'text/html'});
                 res.write('Not found');
